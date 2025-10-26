@@ -1,0 +1,280 @@
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String
+  role          String    @default("empleado") // "admin", "empleado", "superadmin"
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  configuracionColumnas ConfiguracionColumnas[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Modelos para gestión avanzada
+model Proveedor {
+  id          String    @id @default(cuid())
+  nombre      String    @unique
+  activo      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  pedidos     Pedido[]
+  lineasMaterial LineaMaterial[]
+}
+
+model Formato {
+  id        String    @id @default(cuid())
+  nombre    String    @unique
+  activo    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  pedidos   Pedido[]
+  lineasMaterial LineaMaterial[]
+}
+
+model FormaPago {
+  id          String    @id @default(cuid())
+  nombre      String    @unique
+  activo      Boolean   @default(true)
+  comisionFija Float    @default(0) // Comisión fija que paga la empresa (ej: 0.35 para PayPal)
+  comisionPorcentaje Float @default(0) // Comisión en porcentaje que paga la empresa
+  comisionFijaCobradaCliente Float @default(0) // Comisión fija cobrada al cliente (ej: 0.50 para PayPal)
+  comisionPorcentajeCobradoCliente Float @default(0) // Comisión en porcentaje cobrada al cliente (ej: 4.4% para PayPal)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  pedidos     Pedido[]
+}
+
+model EstadoPedido {
+  id        String    @id @default(cuid())
+  nombre    String    @unique
+  activo    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  pedidos        Pedido[]
+  lineasMaterial LineaMaterial[]
+}
+
+model Incidencia {
+  id        String    @id @default(cuid())
+  nombre    String    @unique
+  activo    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  pedidos   Pedido[]
+}
+
+model Transportista {
+  id        String    @id @default(cuid())
+  nombre    String    @unique
+  activo    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  pedidosTransportista PedidoTransportista[]
+  lineasMaterial LineaMaterial[]
+}
+
+model ConfiguracionColumnas {
+  id       String @id @default(cuid())
+  userId   String
+  columna  String
+  orden    Int
+  visible  Boolean @default(true)
+  
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, columna])
+}
+
+model PedidoTransportista {
+  id             String @id @default(cuid())
+  pedidoId       String
+  transportistaId String
+  orden          Int    @default(1) // Orden del transportista (1-4)
+  
+  pedido         Pedido       @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  transportista  Transportista @relation(fields: [transportistaId], references: [id])
+  
+  @@unique([pedidoId, transportistaId])
+  @@unique([pedidoId, orden])
+}
+
+model LineaMaterial {
+  id                        String    @id @default(cuid())
+  pedidoId                  String
+  orden                     Int       @default(1)
+  
+  // Información del material
+  proveedorId               String?
+  material                  String
+  formatoId                 String?
+  cajas                     Int       @default(0)
+  piezas                    Int       @default(0)
+  metrosCuadrados           Float     @default(0)
+  
+  // Precios y costes
+  pvpMaterial               Float     @default(0)
+  costeMaterial             Float     @default(0)
+  
+  // Transporte por línea
+  pvpTransporte             Float     @default(0)
+  costeTransporte           Float     @default(0)
+  
+  // Estado y logística por línea (movidos desde Pedido)
+  estadoPedidoId            String?
+  pedidoFabrica             String?
+  transportistaId           String?
+  fechaPedidoFabrica        DateTime?
+  recibidaOC                Boolean   @default(false)
+  fechaOC                   DateTime?
+  seguimiento               String?
+  fechaEnvio                DateTime?
+  fechaEntrega              DateTime?
+  
+  // Beneficios calculados
+  beneficioProducto         Float     @default(0)
+  porcentajeBeneficioProducto Float   @default(0)
+  
+  // Relaciones
+  pedido                    Pedido          @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  proveedor                 Proveedor?      @relation(fields: [proveedorId], references: [id])
+  formato                   Formato?        @relation(fields: [formatoId], references: [id])
+  estadoPedido              EstadoPedido?   @relation(fields: [estadoPedidoId], references: [id])
+  transportista             Transportista?  @relation(fields: [transportistaId], references: [id])
+  
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+  
+  @@unique([pedidoId, orden])
+}
+
+model Pedido {
+  id                      String    @id @default(cuid())
+  numeroPedido            String    @unique
+  
+  // Información básica del pedido
+  estadoPedidoId         String?
+  incidenciaId           String?
+  formaPagoId            String?
+  factura                String?
+  fechaPedido            DateTime
+  
+  // Información del cliente
+  cliente                String
+  
+  // Comisiones históricas (guardadas al momento de crear el pedido)
+  comisionFija           Float?    // Comisión fija que paga la empresa (histórica)
+  comisionPorcentaje     Float?    // Comisión en porcentaje que paga la empresa (histórica)
+  comisionFijaCobradaCliente Float?    // Comisión fija cobrada al cliente (histórica)
+  comisionPorcentajeCobradoCliente Float?    // Comisión en porcentaje cobrada al cliente (histórica)
+  
+  // Campos de compatibilidad para pedidos simples (sin líneas de material)
+  proveedorId            String?   // Para compatibilidad hacia atrás
+  material               String?   // Para compatibilidad hacia atrás
+  formatoId              String?   // Para compatibilidad hacia atrás
+  cajas                  Int       @default(0)
+  piezas                 Int       @default(0)
+  metrosCuadrados        Float     @default(0)
+  
+  // Precios y costes del material
+  pvpMaterial            Float     @default(0)
+  costeMaterial          Float     @default(0)
+  pvpTotalPedido         Float     @default(0)
+  beneficioProducto      Float     @default(0)
+  porcentajeBeneficioProducto Float @default(0)
+  
+  // Cobros adicionales
+  cobradoExtraPaypal     Float     @default(0)
+  
+  // Fechas adicionales
+  fechaEntrega           DateTime?
+  
+  // Transporte
+  pvpTransporte          Float     @default(0)
+  costeTransporte        Float     @default(0)
+  beneficioTransporte    Float     @default(0)
+  porcentajeBeneficioTransporte Float @default(0)
+  
+  // Beneficios totales
+  beneficio              Float     @default(0)
+  porcentajeBeneficio    Float     @default(0)
+  
+  // Control de concurrencia
+  bloqueadoPorUsuario    String?   // Email del usuario que está editando
+  fechaBloqueo           DateTime? // Cuándo se bloqueó
+  
+  // Configuración de agrupación de materiales
+  modoAgrupado           Boolean   @default(true) // true: campos agrupados, false: por línea
+  
+  // Relaciones
+  estadoPedido           EstadoPedido? @relation(fields: [estadoPedidoId], references: [id])
+  incidencia             Incidencia?   @relation(fields: [incidenciaId], references: [id])
+  formaPago              FormaPago?    @relation(fields: [formaPagoId], references: [id])
+  proveedor              Proveedor?    @relation(fields: [proveedorId], references: [id])
+  formato                Formato?      @relation(fields: [formatoId], references: [id])
+  
+  // Transportistas múltiples y líneas de material
+  pedidosTransportista   PedidoTransportista[]
+  lineasMaterial         LineaMaterial[]
+  
+  // Timestamps
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+}

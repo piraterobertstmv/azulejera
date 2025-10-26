@@ -1,0 +1,267 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 8%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 271 91% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 190 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 10% 20%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 280 100% 70%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 10% 20%;
+    --input: 240 10% 18%;
+    --ring: 271 91% 65%;
+    --radius: 1.5rem;
+    --chart-1: 271 91% 65%;
+    --chart-2: 190 100% 50%;
+    --chart-3: 280 100% 70%;
+    --chart-4: 340 82% 52%;
+    --chart-5: 45 93% 58%;
+  }
+
+  .dark {
+    --background: 240 10% 8%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 271 91% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 190 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 10% 20%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 280 100% 70%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 10% 20%;
+    --input: 240 10% 18%;
+    --ring: 271 91% 65%;
+    --chart-1: 271 91% 65%;
+    --chart-2: 190 100% 50%;
+    --chart-3: 280 100% 70%;
+    --chart-4: 340 82% 52%;
+    --chart-5: 45 93% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a855f7, #06b6d4);
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #9333ea, #0891b2);
+}
+
+/* Make date picker calendar icon white */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(1) brightness(1.2);
+}
+
+/* Animation for counting numbers */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.count-up {
+  animation: countUp 0.6s ease-out;
+}
+
+/* Custom focus styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* Table styles - Dark Theme */
+.table-hover tbody tr {
+  @apply transition-all duration-200;
+}
+
+.table-hover tbody tr:hover {
+  @apply bg-white/5 backdrop-blur-sm;
+}
+
+/* Custom badge styles for estados - Glassmorphism */
+.badge-pendiente {
+  @apply bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 backdrop-blur-sm;
+}
+
+.badge-proceso {
+  @apply bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 backdrop-blur-sm;
+}
+
+.badge-enviado {
+  @apply bg-purple-500/20 text-purple-300 border border-purple-500/30 backdrop-blur-sm;
+}
+
+.badge-entregado {
+  @apply bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 backdrop-blur-sm;
+}
+
+.badge-cancelado {
+  @apply bg-red-500/20 text-red-300 border border-red-500/30 backdrop-blur-sm;
+}
+
+/* Custom loading spinner */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Form styles - Glassmorphism */
+.form-section {
+  @apply space-y-4 p-6 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 shadow-xl;
+}
+
+.form-section h3 {
+  @apply text-lg font-semibold text-foreground mb-4;
+}
+
+/* Card hover effects - Enhanced */
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 hover:scale-[1.02];
+}
+
+/* Glassmorphism card effect */
+.glass-card {
+  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl;
+}
+
+/* Gradient background effects */
+.gradient-bg {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+}
+
+.gradient-border {
+  position: relative;
+  background: linear-gradient(135deg, #a855f7, #06b6d4);
+  padding: 2px;
+  border-radius: 1.5rem;
+}
+
+.gradient-border > * {
+  background: hsl(var(--card));
+  border-radius: calc(1.5rem - 2px);
+}
+
+/* Custom button loading state */
+.btn-loading {
+  @apply opacity-70 cursor-not-allowed;
+}
+
+/* Responsive table wrapper - Dark Theme with Glass */
+.table-wrapper {
+  @apply overflow-x-auto rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md;
+}
+
+.table-wrapper table {
+  @apply min-w-full divide-y divide-white/10;
+}
+
+.table-wrapper th {
+  @apply px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider bg-white/5;
+}
+
+.table-wrapper td {
+  @apply px-6 py-4 whitespace-nowrap text-sm text-foreground;
+}
+
+/* Status indicators - Pill-shaped */
+.status-indicator {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm;
+}
+
+/* Currency display - Dark Theme */
+.currency {
+  @apply font-semibold text-foreground;
+}
+
+.currency-positive {
+  @apply text-emerald-400;
+}
+
+.currency-negative {
+  @apply text-red-400;
+}
+
+/* Mobile-friendly forms */
+@media (max-width: 768px) {
+  .form-grid {
+    @apply grid-cols-1 !important;
+  }
+  
+  .table-wrapper {
+    @apply text-sm;
+  }
+  
+  .table-wrapper th,
+  .table-wrapper td {
+    @apply px-3 py-2;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-break {
+    page-break-before: always;
+  }
+}

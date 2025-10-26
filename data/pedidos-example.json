@@ -1,0 +1,39 @@
+[
+  {
+    "numeroPedido": "PED-2025-0001",
+    "fechaPedido": "2025-01-15",
+    "cliente": "Juan Pérez",
+    "estadoPedido": "Entregado",
+    "formaPago": "Transferencia",
+    "proveedor": "Azulejos del Norte",
+    "material": "Azulejo porcelánico blanco",
+    "formato": "60x60",
+    "cajas": 10,
+    "piezas": 40,
+    "metrosCuadrados": 14.4,
+    "pvpMaterial": 500.00,
+    "costeMaterial": 350.00,
+    "pvpTransporte": 50.00,
+    "costeTransporte": 30.00,
+    "factura": "FAC-2025-001"
+  },
+  {
+    "numeroPedido": "PED-2025-0002",
+    "fechaPedido": "2025-01-20",
+    "cliente": "María García",
+    "estadoPedido": "Pendiente",
+    "formaPago": "Efectivo",
+    "proveedor": "Cerámicas del Sur",
+    "material": "Gres esmaltado gris",
+    "formato": "30x60",
+    "cajas": 15,
+    "piezas": 90,
+    "metrosCuadrados": 27.0,
+    "pvpMaterial": 750.00,
+    "costeMaterial": 500.00,
+    "pvpTransporte": 75.00,
+    "costeTransporte": 45.00,
+    "factura": "FAC-2025-002"
+  }
+]
+
