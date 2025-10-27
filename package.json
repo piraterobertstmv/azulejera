@@ -7,6 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "npx prisma generate",
+    "export": "tsx --require dotenv/config scripts/export-pedidos.ts",
     "import": "tsx --require dotenv/config scripts/import-pedidos.ts"
   },
   "prisma": {
