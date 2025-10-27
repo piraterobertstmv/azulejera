@@ -49,6 +49,54 @@ A modern web application for business management built with Next.js, TypeScript,
 - `npm run lint` - Run linter
 - `npm run import` - Import bulk data from JSON
 
+## Deployment
+
+### Plesk Server
+
+For production deployment to Plesk, follow these steps:
+
+1. **Prepare deployment package:**
+   ```bash
+   ./prepare-deployment.sh
+   ```
+
+2. **Upload to your server** (SSH or Plesk File Manager)
+
+3. **Follow the complete guide:**
+   - 📖 [DEPLOYMENT_PLESK.md](./DEPLOYMENT_PLESK.md) - Full deployment guide
+   - ✅ [DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md) - Deployment checklist
+
+### Quick Deployment Steps
+
+```bash
+# 1. Create PostgreSQL database in Plesk
+# 2. Upload files to /httpdocs/
+# 3. SSH into server:
+ssh username@your-server-ip
+
+# 4. Install and build:
+cd /var/www/vhosts/yourdomain.com/httpdocs/
+npm install --production
+npx prisma generate
+npx prisma migrate deploy
+npx tsx --require dotenv/config scripts/seed.ts
+npm run build
+
+# 5. Configure Node.js in Plesk:
+#    - Startup file: server.js
+#    - Application mode: Production
+#    - Restart App
+```
+
+### Default Login Credentials
+
+After deployment, login with:
+
+- **Superadmin**: `superadmin@cursor.manager` / `superadmin123`
+- **Admin**: `john@doe.com` / `johndoe123`
+
+⚠️ **Change these passwords immediately after first login!**
+
 ## Project Structure
 
 ```
