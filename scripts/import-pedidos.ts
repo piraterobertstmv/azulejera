@@ -102,7 +102,6 @@ async function importPedidos(jsonFilePath: string) {
           estadoPedidoId,
           formaPagoId,
           factura: pedido.factura,
-          observaciones: pedido.observaciones,
           pvpTotalPedido,
           beneficioProducto,
           beneficioTransporte,
