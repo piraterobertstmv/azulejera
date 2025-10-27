@@ -2,126 +2,201 @@
 
 A modern web application for business management built with Next.js, TypeScript, and Prisma. Powered by Cursor AI.
 
-## Features
+## 🚀 Features
 
-- 📦 Complete order management
-- 🏢 Customer administration
-- 🚚 Shipping and logistics control
-- 📊 Dashboard with real-time metrics
-- 💰 Commission system
-- 🤖 AI-powered chat assistant
-- 🎨 Modern UI with Tailwind CSS
+- 📦 **Complete order management** - Advanced order system with multi-line materials
+- 🏢 **Customer administration** - Full customer and supplier control
+- 🚚 **Shipping and logistics** - Multiple transporters per order
+- 📊 **Dashboard with metrics** - Real-time data visualization with interactive charts
+- 💰 **Commission system** - Automatic commission calculations by payment method
+- 🤖 **AI-powered chat assistant** - Intelligent chatbot that queries your database
+- 🎨 **Modern UI** - Dark theme with glassmorphism and smooth animations
+- 🔐 **Secure authentication** - Role-based access (superadmin, admin, employee)
 
-## Technologies
+## 🛠 Technologies
 
-- **Frontend**: Next.js 14, React, TypeScript
-- **Styling**: Tailwind CSS, shadcn/ui
-- **Database**: Prisma ORM (SQLite/PostgreSQL)
-- **Authentication**: NextAuth.js
-- **AI**: OpenAI GPT-4 integration
+- **Frontend**: Next.js 14.2, React 18, TypeScript 5
+- **Styling**: Tailwind CSS, shadcn/ui, Framer Motion
+- **Database**: PostgreSQL (production) / SQLite (local dev)
+- **ORM**: Prisma 6.7
+- **Authentication**: NextAuth.js 4.24
+- **AI**: OpenAI GPT-4, Vercel AI SDK
+- **Charts**: Recharts, Chart.js
+- **Deployment**: Vercel (optimized)
 
-## Installation
+## 📦 Quick Start - Local Development
 
-1. Clone the repository
-2. Install dependencies:
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/piraterobertstmv/azulejera.git
+   cd azulejera
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
-3. Configure environment variables (copy `.env.example` to `.env`)
-4. Run database migrations:
+
+3. **Set up environment variables**
+   Create a `.env` file:
    ```bash
-   npx prisma migrate dev
+   # For local development with SQLite
+   DATABASE_URL="file:./dev.db"
+   DIRECT_URL="file:./dev.db"
+   
+   NEXTAUTH_URL="http://localhost:3004"
+   NEXTAUTH_SECRET="your-secret-key-here"
+   NODE_ENV="development"
+   OPENAI_API_KEY="sk-your-openai-key"
    ```
-5. Seed the database:
+
+4. **Initialize database**
    ```bash
-   npx prisma db seed
+   npx prisma generate
+   npx prisma db push
+   npm run seed
    ```
-6. Start the development server:
+
+5. **Start development server**
    ```bash
    npm run dev
    ```
 
-## Available Scripts
+6. **Access the app**
+   - Open http://localhost:3004
+   - Login: `superadmin@cursor.manager` / `superadmin123`
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run linter
-- `npm run import` - Import bulk data from JSON
+## 🚀 Production Deployment
 
-## Deployment
+Ready to deploy to Vercel? See our comprehensive guide:
 
-### Plesk Server
+**👉 [DEPLOYMENT.md](./DEPLOYMENT.md)** for detailed instructions
 
-For production deployment to Plesk, follow these steps:
+Quick summary:
+1. Set up PostgreSQL (Vercel Postgres, Neon, or Supabase)
+2. Configure environment variables in Vercel
+3. Push to GitHub (auto-deploys)
+4. Run database migrations
+5. You're live! 🎉
 
-1. **Prepare deployment package:**
-   ```bash
-   ./prepare-deployment.sh
-   ```
+## 📂 Project Structure
 
-2. **Upload to your server** (SSH or Plesk File Manager)
+```
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   ├── pedidos/           # Orders pages
+│   ├── admin/             # Admin panel
+│   └── globals.css        # Global styles
+├── components/            # React components
+│   ├── ui/               # shadcn/ui components
+│   ├── admin/            # Admin components
+│   ├── dashboard.tsx     # Main dashboard
+│   ├── sidebar.tsx       # Navigation sidebar
+│   └── chat-widget.tsx   # AI chatbot
+├── lib/                   # Utilities
+│   ├── auth.ts           # NextAuth config
+│   ├── db.ts             # Prisma client
+│   └── types.ts          # TypeScript types
+├── prisma/               # Database
+│   ├── schema.prisma     # Database schema
+│   └── dev.db           # SQLite (local only)
+├── scripts/              # Utility scripts
+│   ├── seed.ts          # Database seeding
+│   └── import-pedidos.ts # Bulk import
+└── public/               # Static files
+```
 
-3. **Follow the complete guide:**
-   - 📖 [DEPLOYMENT_PLESK.md](./DEPLOYMENT_PLESK.md) - Full deployment guide
-   - ✅ [DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md) - Deployment checklist
+## 🔧 Available Scripts
 
-### Quick Deployment Steps
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server (port 3004) |
+| `npm run build` | Build for production (includes Prisma generate & migrate) |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run seed` | Seed database with initial data |
+| `npm run import` | Bulk import orders from JSON |
 
+## 🔐 Default Users (After Seeding)
+
+| Email | Password | Role |
+|-------|----------|------|
+| `superadmin@cursor.manager` | `superadmin123` | superadmin |
+| `empleado@cursor.manager` | `empleado123` | empleado |
+
+**⚠️ Change passwords immediately in production!**
+
+## 🎨 Key Features
+
+### AI Chatbot
+- Natural language queries to your database
+- Ask "¿Cuántos pedidos tenemos?" or "¿Qué proveedores tenemos?"
+- Powered by OpenAI GPT-4
+- Always responds in Spanish
+
+### Dashboard Analytics
+- Real-time revenue calculations
+- Interactive charts (Bar, Pie)
+- Date range filters
+- Order state distribution
+
+### Multi-line Orders
+- Support for multiple materials per order
+- Individual pricing per line
+- Separate transport costs
+- Flexible material grouping
+
+### Vertical Admin Panel
+- Modern vertical navigation
+- Manage suppliers, formats, payment methods
+- Configure order states and incidents
+- User management with role-based access
+
+## 🔒 Security
+
+- ✅ Passwords hashed with bcrypt
+- ✅ JWT session tokens
+- ✅ Role-based access control (RBAC)
+- ✅ Environment variables for secrets
+- ✅ SQL injection protection via Prisma
+- ✅ HTTPS enforced in production
+
+## 🐛 Troubleshooting
+
+**Port already in use?**
 ```bash
-# 1. Create PostgreSQL database in Plesk
-# 2. Upload files to /httpdocs/
-# 3. SSH into server:
-ssh username@your-server-ip
+lsof -ti:3004 | xargs kill
+npm run dev
+```
 
-# 4. Install and build:
-cd /var/www/vhosts/yourdomain.com/httpdocs/
-npm install --production
+**Prisma errors?**
+```bash
 npx prisma generate
-npx prisma migrate deploy
-npx tsx --require dotenv/config scripts/seed.ts
-npm run build
-
-# 5. Configure Node.js in Plesk:
-#    - Startup file: server.js
-#    - Application mode: Production
-#    - Restart App
+npx prisma db push
 ```
 
-### Default Login Credentials
+**Chatbot not working?**
+- Verify `OPENAI_API_KEY` is set
+- Check API key has credits
+- Ensure key starts with `sk-`
 
-After deployment, login with:
+**Vercel deployment fails?**
+- See [DEPLOYMENT.md](./DEPLOYMENT.md)
+- Verify PostgreSQL is configured
+- Check environment variables
 
-- **Superadmin**: `superadmin@cursor.manager` / `superadmin123`
-- **Admin**: `john@doe.com` / `johndoe123`
+## 📄 License
 
-⚠️ **Change these passwords immediately after first login!**
-
-## Project Structure
-
-```
-├── app/                 # Next.js App Router
-├── components/          # Reusable components
-├── lib/                # Utilities and configurations
-├── prisma/             # Database schemas
-├── scripts/            # Utility scripts
-└── public/             # Static files
-```
-
-## Environment Variables
-
-```env
-DATABASE_URL="file:./dev.db"
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-secret-key"
-NODE_ENV="development"
-OPENAI_API_KEY="your-openai-api-key"
-```
-
-## License
-
-MIT
+Private - All rights reserved
 
 ---
 
-Built with ❤️ using Cursor AI
+**Built with ❤️ using [Cursor AI](https://cursor.sh)**
+
+*Powered by Next.js • Vercel • PostgreSQL • OpenAI*
