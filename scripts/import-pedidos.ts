@@ -114,7 +114,7 @@ async function importPedidos(jsonFilePath: string) {
           // Crear línea de material
           lineasMaterial: {
             create: {
-              material: pedido.material,
+              material: pedido.material || 'Material sin especificar',
               formato: formatoId ? { connect: { id: formatoId } } : undefined,
               proveedor: proveedorId ? { connect: { id: proveedorId } } : undefined,
               cajas: pedido.cajas || 0,
