@@ -163,11 +163,6 @@ export const ChatWidget = () => {
                 key={i}
                 className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                {message.role === 'assistant' && (
-                  <div className="p-1.5 rounded-lg bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 flex-shrink-0 h-fit">
-                    <Bot className="h-4 w-4 text-purple-400" />
-                  </div>
-                )}
                 <div
                   className={`max-w-[75%] px-3 py-2 rounded-2xl text-sm ${
                     message.role === 'user'
@@ -179,20 +174,13 @@ export const ChatWidget = () => {
                     {message.content}
                   </div>
                 </div>
-                {message.role === 'user' && (
-                  <div className="p-1.5 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex-shrink-0 h-fit">
-                    <User className="h-4 w-4 text-cyan-400" />
-                  </div>
-                )}
               </div>
             ))}
             {isLoading && (
               <div className="flex gap-2 justify-start">
-                <div className="p-1.5 rounded-lg bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30">
-                  <Bot className="h-4 w-4 text-purple-400" />
-                </div>
-                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm flex items-center gap-2">
                   <Loader2 className="h-4 w-4 text-purple-400 animate-spin" />
+                  <span className="text-sm text-muted-foreground">Escribiendo...</span>
                 </div>
               </div>
             )}
